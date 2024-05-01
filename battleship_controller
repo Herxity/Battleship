@@ -33,12 +33,24 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity battleship_controller is
     Port (
+        --All purpose IO
         clk : in std_logic;
-        --IO for board state 
-        kypd_in : in std_logic_vector(3 downto 0) --Current button that is being pressed on the keypad 
+        keypad : in integer; --Current button that is being pressed on the keypad 
+        oled_mode : out integer;
         
+        --IO for board state 
+        checkConnect : out std_logic;
+        isConnected : in std_logic;
+        wantToPlay : out std_logic;
+        readyToPlay : in std_logic;
         --IO for game state 
         
+        --GridControllerOut
+        action, coord1, coord2 : out std_logic_vector(3 downto 0);
+        rstGrid : out std_logic;
+        brdReady : in std_logic
+        
+        --
         
     );
 end battleship_controller;
@@ -49,21 +61,43 @@ architecture Behavioral of battleship_controller is
     type game_state is (beginGame, aim, confirm, resultAwait, msgAWait, checkHitMiss, sendHitMiss, sendLoss, Win, Loss, Hit, Miss);
 
     signal BS : board_state;
-    signal GS : game_state;
+    signal GS : game_state := beginGame;
     signal inPlayState : std_logic := '0';
-    signal sel, a, b : std_logic;
+    signal w2p_reg : std_logic:='0';
 begin
 
     boardStateMachine: process(clk)
     begin
         if rising_edge(clk) then
-            case BS is 
+            case BS is
                 when idle =>
+                    oled_mode <= 0;
+                    if(keypad = 10) then
+                        BS <= connect;
+                    end if;
                 when connect=>
+                    checkConnect <= '1';
+                    oled_mode <= 1;
+                    if(isConnected = '1') then
+                        checkConnect <= '0';
+                        BS <= ready;
+                    end if;
                 when ready =>
+                    --Do we want to play with this person?
+                    if(keypad = 10) then
+                        w2p_reg <= '1';
+                    end if;
+                    wantToPlay <=w2p_reg;
+                    oled_mode <= 2;
+                    --If we want to play with this person
+                    if(readyToPlay = '1' and w2p_reg = '1') then
+                        wantToPlay  <= '0';
+                        w2p_reg <='0';
+                        BS <= play;
+                    end if;
                 when play =>
                     inPlayState <= '1';
-                when others => 
+                when others =>
             end case;
         end if;
     end process;
@@ -72,19 +106,32 @@ begin
     begin
         if rising_edge(clk) then
             if inPlayState = '1' then
-                case GS is 
+                case GS is
                     when beginGame =>
                         -- Set all values to 0
-                    when aim=> 
-                    when confirm => 
-                    when resultAwait => 
-                    when msgAwait => 
-                    when checkHitMiss => 
-                    when sendHitMiss => 
-                    when sendLoss => 
-                    when Win => 
-                    when Miss => 
-                    when Loss => 
+                        rstGrid <= '1';
+                        
+                    when aim=>
+                        -- 
+                        
+                    when confirm =>
+                        
+                    when resultAwait =>
+                        
+                    when msgAwait =>
+                        
+                    when checkHitMiss =>
+                        
+                    when sendHitMiss =>
+                        
+                    when sendLoss =>
+                        
+                    when Win =>
+                        
+                    when Miss =>
+                        
+                    when Loss =>
+                        
                     when others =>
                         GS <= beginGame;
                 end case;
