@@ -1,0 +1,96 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 05/01/2024 12:22:34 PM
+-- Design Name: 
+-- Module Name: battleship_controller - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity battleship_controller is
+    Port (
+        clk : in std_logic;
+        --IO for board state 
+        kypd_in : in std_logic_vector(3 downto 0) --Current button that is being pressed on the keypad 
+        
+        --IO for game state 
+        
+        
+    );
+end battleship_controller;
+
+architecture Behavioral of battleship_controller is
+    type board_state is (idle, connect, ready, play);
+
+    type game_state is (beginGame, aim, confirm, resultAwait, msgAWait, checkHitMiss, sendHitMiss, sendLoss, Win, Loss, Hit, Miss);
+
+    signal BS : board_state;
+    signal GS : game_state;
+    signal inPlayState : std_logic := '0';
+    signal sel, a, b : std_logic;
+begin
+
+    boardStateMachine: process(clk)
+    begin
+        if rising_edge(clk) then
+            case BS is 
+                when idle =>
+                when connect=>
+                when ready =>
+                when play =>
+                    inPlayState <= '1';
+                when others => 
+            end case;
+        end if;
+    end process;
+
+    gameStateMachine: process(clk)
+    begin
+        if rising_edge(clk) then
+            if inPlayState = '1' then
+                case GS is 
+                    when beginGame =>
+                        -- Set all values to 0
+                    when aim=> 
+                    when confirm => 
+                    when resultAwait => 
+                    when msgAwait => 
+                    when checkHitMiss => 
+                    when sendHitMiss => 
+                    when sendLoss => 
+                    when Win => 
+                    when Miss => 
+                    when Loss => 
+                    when others =>
+                        GS <= beginGame;
+                end case;
+            end if;
+        end if;
+
+    end process;
+
+end Behavioral;
