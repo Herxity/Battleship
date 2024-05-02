@@ -38,8 +38,8 @@ entity image_top is
     );
     Port ( clk :in std_logic;
          hs,vs: out std_logic;
-         R,B: out std_logic_vector(3 downto 0);
-         G :out std_logic_vector(3 downto 0)
+         R,B: out std_logic_vector(4 downto 0);
+         G :out std_logic_vector(5 downto 0)
 
         );
 end image_top;
@@ -56,10 +56,10 @@ architecture Behavioral of image_top is
         Port ( clk, en, vid :in std_logic;
              hcount:in std_logic_vector(9 downto 0);
              vcount:in std_logic_vector(9 downto 0);
-             R,B: out std_logic_vector(3 downto 0);
-             G: out std_logic_vector( 3 downto 0);
-             Rin,Bin: in std_logic_vector(3 downto 0);
-             Gin: in std_logic_vector( 3 downto 0)
+             R,B: out std_logic_vector(4 downto 0);
+             G: out std_logic_vector( 5 downto 0);
+             Rin,Bin: in std_logic_vector(4 downto 0);
+             Gin: in std_logic_vector( 5 downto 0)
 
             );
     end component pixel_pusher;
@@ -75,8 +75,8 @@ architecture Behavioral of image_top is
     component color_filler
         Port ( clk, en,vid :in std_logic;
              hcount,vcount:in std_logic_vector(9 downto 0);
-             Rout,Bout: out std_logic_vector(3 downto 0);
-             Gout: out std_logic_vector( 3 downto 0);
+             Rout,Bout: out std_logic_vector(4 downto 0);
+             Gout: out std_logic_vector( 5 downto 0);
              grid : in std_logic_vector((sel_width * bus_width) - 1 downto 0)
             );
     end component color_filler;
@@ -85,8 +85,8 @@ architecture Behavioral of image_top is
 
     signal en, temp_vs, vid: std_logic;
     signal hcount,vcount: std_logic_vector(9 downto 0);
-    signal R_sig,B_sig: std_logic_vector(3 downto 0);
-    signal G_sig: std_logic_vector(3 downto 0);
+    signal R_sig,B_sig: std_logic_vector(4 downto 0);
+    signal G_sig: std_logic_vector(5 downto 0);
     signal grid : std_logic_vector((sel_width * bus_width) - 1 downto 0) := (others => '0');
 
 

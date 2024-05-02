@@ -35,8 +35,8 @@ entity color_filler is
     );
     Port ( clk, en,vid :in std_logic;
          hcount,vcount:in std_logic_vector(9 downto 0);
-         Rout,Bout: out std_logic_vector(3 downto 0);
-         Gout: out std_logic_vector( 3 downto 0);
+         Rout,Bout: out std_logic_vector(4 downto 0);
+         Gout: out std_logic_vector( 5 downto 0);
          grid : in std_logic_vector((sel_width * bus_width) - 1 downto 0)
         );
 end color_filler;
@@ -85,13 +85,13 @@ begin
                 end if;
 
                 if(((y)*6) + x = idx) then
-                    Rout<= "1111";
-                    Gout <= "0000";
-                    Bout <= "0000";
+                    Rout<= "11111";
+                    Gout <= "000000";
+                    Bout <= "00000";
                 else
-                    Rout<= "0000";
-                    Gout <= "0000";
-                    Bout <= "1111";
+                    Rout<= "00000";
+                    Gout <= "000000";
+                    Bout <= "11111";
                 end if;
             end if;
             if(en = '1') then
