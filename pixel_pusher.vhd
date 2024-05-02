@@ -35,10 +35,10 @@ use IEEE.std_logic_unsigned.all;
 entity pixel_pusher is
     Port ( clk, en,vid :in std_logic;
          hcount,vcount:in std_logic_vector(9 downto 0);
-         R,B: out std_logic_vector(4 downto 0);
-         G: out std_logic_vector( 5 downto 0);
-         Rin,Bin: in std_logic_vector(4 downto 0);
-         Gin: in std_logic_vector( 5 downto 0)
+         R,B: out std_logic_vector(3 downto 0);
+         G: out std_logic_vector( 3 downto 0);
+         Rin,Bin: in std_logic_vector(3 downto 0);
+         Gin: in std_logic_vector( 3 downto 0)
         );
 end pixel_pusher;
 
@@ -51,9 +51,9 @@ begin
             if en = '1' and vid = '1' then
                 if (unsigned(hcounter) <= 599) and (unsigned(vcounter) <= 479) then
                     if (unsigned(vcounter) mod 80 = 0 or unsigned(hcounter) mod 100 = 0) then
-                        R <= "11111"; -- White Lines
-                        G <= "111111";
-                        B <= "11111";
+                        R <= "1111"; -- White Lines
+                        G <= "1111";
+                        B <= "1111";
                     else
                         R <= Rin;
                         G <= Gin;
@@ -65,6 +65,7 @@ begin
                     B <= (others => '0');
                 end if;
             end if;
+
         end if;
     end process;
 
